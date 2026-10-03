@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dab2cbd8e628d3d4e9d0cb9399600d1a, type: 3}
+  m_Name: CubeDungeonKit
+  m_EditorClassIdentifier: Assembly-CSharp::CubeDungeon.CubeDungeonKit
+  room: {fileID: 3630730114676253536, guid: 3e4c234edb551524aa713ec2a610e0f7, type: 3}
+  hall: {fileID: 3596407877220900318, guid: d9f8185a8af399145949edd304cbb209, type: 3}
+  ramp: {fileID: 790120841019499793, guid: 92fbf2026ef47544e850aa1a3bb08314, type: 3}
+  stairSpace: {fileID: 6476779474237879217, guid: 9895271ae6493084b8e117222e0045a3, type: 3}
+  wall: {fileID: 2787988970314671512, guid: f6e58441e9092cf448d3deca6af0e052, type: 3}
+  doorway: {fileID: 4008450864163846235, guid: cede820f4a447d844949402bb6e2af9b, type: 3}
+  pillar: {fileID: 4130554709280609812, guid: e51de2b0a56b35f4799f5d152884862e, type: 3}
+  arch: {fileID: 5738776850790553496, guid: 46971268f696ec74cbf85bef039176f3, type: 3}
+  stonePalette:
+  - {fileID: 2100000, guid: 3ca3f3e7dce0d474aa5d0dc17c12449f, type: 2}
+  - {fileID: 2100000, guid: c86b25480c24a8f4daa965c25671a2d1, type: 2}
+  - {fileID: 2100000, guid: 7c209e79b89989f429a91f9f0654a67f, type: 2}
+  - {fileID: 2100000, guid: bbd173c7e39fde041a021bf6da16775e, type: 2}
+  - {fileID: 2100000, guid: 344a127de820e44448b0e7a20333291a, type: 2}

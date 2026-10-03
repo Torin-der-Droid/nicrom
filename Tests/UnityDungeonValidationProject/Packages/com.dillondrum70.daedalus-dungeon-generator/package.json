@@ -1,0 +1,28 @@
+{
+  "name": "com.dillondrum70.daedalus-dungeon-generator",
+  "version": "1.0.0",
+  "displayName": "Daedalus Dungeon Generator",
+  "description": "A 3D dungeon generator tool using A* and Delaunay Tetrahedralization.",
+  "unity": "2021.3",
+  "unityRelease": "8f1",
+  "documentationUrl": "https://github.com/dillondrum70/daedalus-dungeon-generator/wiki",
+  "changelogUrl": "https://github.com/dillondrum70/daedalus-dungeon-generator/wiki/Changelog",
+  "licensesUrl": "https://github.com/dillondrum70/daedalus-dungeon-generator/wiki/License",
+  "keywords": [
+    "keyword1",
+    "keyword2",
+    "keyword3"
+  ],
+  "author": {
+    "name": "Unity",
+    "email": "unity@example.com",
+    "url": "https://www.unity3d.com"
+  },
+  "samples": [
+    {
+      "displayName": "Original Daedalus Examples",
+      "description": "Optional upstream demonstration scenes and artwork; not required by CubeDungeon.",
+      "path": "Samples~"
+    }
+  ]
+}

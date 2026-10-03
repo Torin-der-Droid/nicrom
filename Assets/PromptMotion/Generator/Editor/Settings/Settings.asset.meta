@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 400dbc748424bd742b03c09e407cfac9
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 382366
+  packageName: PromptMotion Lite - AI Animation Generator
+  packageVersion: 1.0
+  assetPath: Assets/PromptMotion/Generator/Editor/Settings/Settings.asset
+  uploadId: 922190

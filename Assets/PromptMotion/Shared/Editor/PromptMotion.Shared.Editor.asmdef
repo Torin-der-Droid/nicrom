@@ -1,0 +1,22 @@
+{
+    "name": "PromptMotion.Shared.Editor",
+    "rootNamespace": "PromptMotion.Shared",
+    "references": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.nuget.newtonsoft-json",
+            "expression": "1.0.0",
+            "define": "PROMPTMOTION_HAS_NEWTONSOFT"
+        }
+    ],
+    "noEngineReferences": false
+}

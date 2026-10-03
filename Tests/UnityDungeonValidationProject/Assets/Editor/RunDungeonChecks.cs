@@ -1,0 +1,1 @@
+public static class RunDungeonChecks { public static void Run() { NicromFPS.Editor.DungeonGoblinValidation.Run(); NicromFPS.Editor.DungeonTraversalValidation.Run(); NicromFPS.Editor.DungeonPlacementValidation.Run(); } }

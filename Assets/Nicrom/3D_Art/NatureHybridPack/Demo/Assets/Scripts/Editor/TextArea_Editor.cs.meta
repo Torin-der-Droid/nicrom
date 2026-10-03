@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 8bde212209af2f5409c54ba5ee6d99be
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 181109
+  packageName: Nature - Hybrid Pack
+  packageVersion: 1.1.5
+  assetPath: Assets/Nicrom/3D_Art/NatureHybridPack/Demo/Assets/Scripts/Editor/TextArea_Editor.cs
+  uploadId: 859804

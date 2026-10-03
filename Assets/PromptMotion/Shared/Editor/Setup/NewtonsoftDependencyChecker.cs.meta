@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 115656c5412be604394e72843d2756ad
+AssetOrigin:
+  serializedVersion: 1
+  productId: 382366
+  packageName: PromptMotion Lite - AI Animation Generator
+  packageVersion: 1.0
+  assetPath: Assets/PromptMotion/Shared/Editor/Setup/NewtonsoftDependencyChecker.cs
+  uploadId: 922190

@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 30675ae71fdb9044b94e82e173dea517
+AssetOrigin:
+  serializedVersion: 1
+  productId: 382366
+  packageName: PromptMotion Lite - AI Animation Generator
+  packageVersion: 1.0
+  assetPath: Assets/PromptMotion/Shared/Editor/Humanoid/HumanoidBoneAssistWindow.cs
+  uploadId: 922190

@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: d82953eeddfd099418b6d22bbe43aa02
+AssetOrigin:
+  serializedVersion: 1
+  productId: 382366
+  packageName: PromptMotion Lite - AI Animation Generator
+  packageVersion: 1.0
+  assetPath: Assets/PromptMotion/Generator/Editor/Services/HistoryStore.cs
+  uploadId: 922190

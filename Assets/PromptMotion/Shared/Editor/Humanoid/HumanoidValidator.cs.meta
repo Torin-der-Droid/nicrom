@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 2667fb85f7457e945b99119c287f1e58
+AssetOrigin:
+  serializedVersion: 1
+  productId: 382366
+  packageName: PromptMotion Lite - AI Animation Generator
+  packageVersion: 1.0
+  assetPath: Assets/PromptMotion/Shared/Editor/Humanoid/HumanoidValidator.cs
+  uploadId: 922190

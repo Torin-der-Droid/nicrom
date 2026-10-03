@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 16d85d17333c8b04ca070466ab37c15d
+AssetOrigin:
+  serializedVersion: 1
+  productId: 382366
+  packageName: PromptMotion Lite - AI Animation Generator
+  packageVersion: 1.0
+  assetPath: Assets/PromptMotion/Shared/Editor/Humanoid/HumanoidAvatarFixer.cs
+  uploadId: 922190

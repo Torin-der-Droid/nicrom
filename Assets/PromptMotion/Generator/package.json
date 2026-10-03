@@ -1,0 +1,28 @@
+{
+  "name": "com.ragendom.promptmotion-lite",
+  "version": "1.0.0",
+  "displayName": "PromptMotion Lite",
+  "description": "Free AI text-to-animation for Unity. Generate humanoid Mecanim FBX clips from text prompts right in the Editor. Activation is free: enter your email, get a 6-digit code, and unlock 5 lifetime generations — no purchase or account required. Cached prompts are free. Need more? PromptMotion (Standard) includes 50 generations/month and PromptMotion Pro adds 150/month plus a Pro animation toolset.",
+  "unity": "6000.0",
+  "author": {
+    "name": "Ragendom AS Publisher",
+    "url": "https://promptmotion.dev",
+    "email": "ragendom@gmail.com"
+  },
+  "keywords": [
+    "animation",
+    "AI",
+    "mecanim",
+    "humanoid",
+    "FBX",
+    "generative",
+    "text-to-animation",
+    "free",
+    "editor-tool"
+  ],
+  "category": "Tools/Animation",
+  "dependencies": {
+    "com.unity.editorcoroutines": "1.0.0",
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
+  }
+}

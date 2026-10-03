@@ -1,0 +1,14 @@
+C:\Users\gott\Desktop\Unity\My project (14)\Tests\NicromInventory\bin\Debug\net10.0\NicromInventory.exe
+C:\Users\gott\Desktop\Unity\My project (14)\Tests\NicromInventory\bin\Debug\net10.0\NicromInventory.deps.json
+C:\Users\gott\Desktop\Unity\My project (14)\Tests\NicromInventory\bin\Debug\net10.0\NicromInventory.runtimeconfig.json
+C:\Users\gott\Desktop\Unity\My project (14)\Tests\NicromInventory\bin\Debug\net10.0\NicromInventory.dll
+C:\Users\gott\Desktop\Unity\My project (14)\Tests\NicromInventory\bin\Debug\net10.0\NicromInventory.pdb
+C:\Users\gott\Desktop\Unity\My project (14)\Tests\NicromInventory\obj\Debug\net10.0\NicromInventory.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\gott\Desktop\Unity\My project (14)\Tests\NicromInventory\obj\Debug\net10.0\NicromInventory.AssemblyInfoInputs.cache
+C:\Users\gott\Desktop\Unity\My project (14)\Tests\NicromInventory\obj\Debug\net10.0\NicromInventory.AssemblyInfo.cs
+C:\Users\gott\Desktop\Unity\My project (14)\Tests\NicromInventory\obj\Debug\net10.0\NicromInventory.csproj.CoreCompileInputs.cache
+C:\Users\gott\Desktop\Unity\My project (14)\Tests\NicromInventory\obj\Debug\net10.0\NicromInventory.dll
+C:\Users\gott\Desktop\Unity\My project (14)\Tests\NicromInventory\obj\Debug\net10.0\refint\NicromInventory.dll
+C:\Users\gott\Desktop\Unity\My project (14)\Tests\NicromInventory\obj\Debug\net10.0\NicromInventory.pdb
+C:\Users\gott\Desktop\Unity\My project (14)\Tests\NicromInventory\obj\Debug\net10.0\NicromInventory.genruntimeconfig.cache
+C:\Users\gott\Desktop\Unity\My project (14)\Tests\NicromInventory\obj\Debug\net10.0\ref\NicromInventory.dll

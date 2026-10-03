@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 38add4d0ec719a34393aaa01948b3cc6
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 382366
+  packageName: PromptMotion Lite - AI Animation Generator
+  packageVersion: 1.0
+  assetPath: Assets/PromptMotion/Documentation/Documentation.html
+  uploadId: 922190

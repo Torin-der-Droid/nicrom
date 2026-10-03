@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PromptMotion Lite - Documentation</title>
+<style>
+:root {
+  --bg: #0D0B1A;
+  --bg-card: #161230;
+  --bg-card-hover: #1E1840;
+  --bg-code: #1A1535;
+  --bg-sidebar: #100D20;
+  --text: #e2e2ea;
+  --text-dim: #9088b0;
+  --text-code: #c8c8d8;
+  --accent: #9333EA;
+  --accent-light: #A855F7;
+  --accent-glow: rgba(147,51,234,0.15);
+  --green: #00cec9;
+  --green-dim: rgba(0,206,201,0.12);
+  --yellow: #fdcb6e;
+  --yellow-dim: rgba(253,203,110,0.12);
+  --pink: #EC4899;
+  --pink-dim: rgba(236,72,153,0.12);
+  --orange: #e17055;
+  --orange-dim: rgba(225,112,85,0.12);
+  --blue: #818cf8;
+  --blue-dim: rgba(129,140,248,0.12);
+  --border: #2D2550;
+  --border-light: #3D3560;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --sidebar-w: 280px;
+  --header-h: 64px;
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', Consolas, monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 24px); }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 15px;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--accent); color: #fff; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+/* ---- HEADER ---- */
+.header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: rgba(13,11,26,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  gap: 16px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.header-logo .dot {
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, #9333EA, #EC4899);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; color: #fff;
+}
+
+.header-search {
+  flex: 1;
+  max-width: 420px;
+  margin-left: auto;
+  position: relative;
+}
+
+.header-search input {
+  width: 100%;
+  padding: 8px 16px 8px 40px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 14px;
+  font-family: var(--font);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.header-search input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.header-search input::placeholder { color: var(--text-dim); }
+
+.header-search .search-icon {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  color: var(--text-dim); font-size: 14px; pointer-events: none;
+}
+
+.header-version {
+  font-size: 12px; color: var(--text-dim);
+  background: var(--bg-card);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.menu-toggle {
+  display: none;
+  background: none; border: none;
+  color: var(--text); font-size: 22px;
+  cursor: pointer; padding: 4px;
+}
+
+/* ---- SIDEBAR ---- */
+.sidebar {
+  position: fixed;
+  top: var(--header-h);
+  left: 0;
+  width: var(--sidebar-w);
+  height: calc(100vh - var(--header-h));
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 20px 0;
+  z-index: 90;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-group { margin-bottom: 8px; }
+
+.sidebar-group-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-dim);
+  padding: 12px 24px 6px;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 24px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 13.5px;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+
+.sidebar a:hover {
+  color: var(--text);
+  background: var(--accent-glow);
+}
+
+.sidebar a.active {
+  color: var(--accent-light);
+  background: var(--accent-glow);
+  border-left-color: var(--accent);
+  font-weight: 600;
+}
+
+.sidebar a .nav-icon {
+  width: 20px;
+  text-align: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* ---- MAIN ---- */
+.main {
+  margin-left: var(--sidebar-w);
+  margin-top: var(--header-h);
+  padding: 40px 48px 80px;
+  max-width: 960px;
+}
+
+/* ---- HERO ---- */
+.hero {
+  padding: 48px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+
+.hero h1 {
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #fff 0%, #A855F7 40%, #EC4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero p {
+  font-size: 17px;
+  color: var(--text-dim);
+  max-width: 640px;
+  line-height: 1.7;
+}
+
+.hero-badges {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-purple { background: var(--accent-glow); color: var(--accent-light); border: 1px solid rgba(147,51,234,0.25); }
+.badge-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(0,206,201,0.25); }
+.badge-yellow { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(253,203,110,0.25); }
+.badge-pink { background: var(--pink-dim); color: var(--pink); border: 1px solid rgba(236,72,153,0.25); }
+.badge-blue { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(129,140,248,0.25); }
+
+/* ---- SECTIONS ---- */
+.section {
+  margin-bottom: 56px;
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
+
+.section h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section h2 .section-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.section > .section-desc {
+  color: var(--text-dim);
+  margin-bottom: 28px;
+  font-size: 15px;
+}
+
+h3 {
+  font-size: 19px;
+  font-weight: 700;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  color: var(--text);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 24px;
+  margin-bottom: 8px;
+  color: var(--accent-light);
+}
+
+p { margin-bottom: 12px; }
+
+ul, ol { padding-left: 22px; margin-bottom: 14px; }
+li { margin-bottom: 4px; }
+
+a { color: var(--accent-light); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---- CARDS ---- */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 16px;
+  transition: border-color 0.2s;
+}
+
+.card:hover { border-color: var(--border-light); }
+
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.mini-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: block;
+  color: inherit;
+}
+
+.mini-card:hover {
+  border-color: var(--accent);
+  background: var(--bg-card-hover);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.mini-card h4 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  color: var(--text);
+  border: none;
+  padding: 0;
+}
+
+.mini-card p {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ---- CODE ---- */
+pre {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px 22px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-code);
+  margin-bottom: 16px;
+  position: relative;
+}
+
+pre .lang-tag {
+  position: absolute;
+  top: 8px; right: 12px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-dim);
+  opacity: 0.6;
+  font-family: var(--font);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: var(--bg-code);
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: var(--accent-light);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+.kw { color: #C084FC; }
+.str { color: #c3e88d; }
+.cm { color: #6B5F8A; font-style: italic; }
+.fn { color: #818cf8; }
+.tp { color: #ffcb6b; }
+.num { color: #f78c6c; }
+.op { color: #A78BFA; }
+
+/* ---- TABLES ---- */
+.table-wrap {
+  overflow-x: auto;
+  margin-bottom: 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+thead th {
+  background: var(--bg-code);
+  font-weight: 700;
+  text-align: left;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+}
+
+td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(147,51,234,0.04); }
+td.yes { color: var(--green); font-weight: 700; text-align: center; }
+td.no { color: var(--text-dim); text-align: center; }
+
+/* ---- COLLAPSIBLE ---- */
+details {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+
+details[open] { border-color: var(--border-light); }
+
+summary {
+  padding: 14px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+  list-style: none;
+  transition: color 0.15s;
+}
+
+summary::-webkit-details-marker { display: none; }
+
+summary::before {
+  content: '\25B6';
+  font-size: 10px;
+  color: var(--text-dim);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+details[open] > summary::before { transform: rotate(90deg); }
+
+summary:hover { color: var(--accent-light); }
+
+details .details-body { padding: 0 20px 18px; }
+details .details-body p:first-child { margin-top: 0; }
+
+/* ---- CALLOUT ---- */
+.callout {
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.callout > div { flex: 1; }
+.callout p { margin-bottom: 6px; }
+.callout p:last-child { margin-bottom: 0; }
+
+.callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+.callout-tip { background: var(--green-dim); border: 1px solid rgba(0,206,201,0.2); }
+.callout-tip .callout-icon { color: var(--green); }
+
+.callout-warn { background: var(--yellow-dim); border: 1px solid rgba(253,203,110,0.2); }
+.callout-warn .callout-icon { color: var(--yellow); }
+
+.callout-info { background: var(--blue-dim); border: 1px solid rgba(129,140,248,0.2); }
+.callout-info .callout-icon { color: var(--blue); }
+
+.callout-danger { background: var(--pink-dim); border: 1px solid rgba(236,72,153,0.2); }
+.callout-danger .callout-icon { color: var(--pink); }
+
+/* ---- STEP LIST ---- */
+.steps { counter-reset: step; margin-bottom: 16px; }
+
+.step {
+  display: flex;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  counter-increment: step;
+}
+
+.step:last-child { border-bottom: none; }
+
+.step::before {
+  content: counter(step);
+  width: 28px; height: 28px;
+  background: var(--accent-glow);
+  color: var(--accent-light);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.step-content { flex: 1; }
+.step-content strong { color: var(--text); }
+
+/* ---- FLOW DIAGRAM ---- */
+.flow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+}
+
+.flow-node {
+  padding: 8px 16px;
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.flow-arrow {
+  padding: 0 8px;
+  color: var(--text-dim);
+  font-size: 16px;
+}
+
+/* ---- TAGS ---- */
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tag-required { background: var(--pink-dim); color: var(--pink); }
+.tag-optional { background: var(--green-dim); color: var(--green); }
+.tag-auto { background: var(--accent-glow); color: var(--accent-light); }
+.tag-platform { background: var(--yellow-dim); color: var(--yellow); }
+.tag-info { background: var(--blue-dim); color: var(--blue); }
+
+/* ---- ERROR CODE BLOCK ---- */
+.error-code {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--pink);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin-bottom: 12px;
+}
+.error-code.auto-retry { border-left-color: var(--yellow); }
+.error-code-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+.error-code-head code {
+  background: var(--pink-dim);
+  color: var(--pink);
+  font-weight: 700;
+}
+.error-code.auto-retry .error-code-head code {
+  background: var(--yellow-dim);
+  color: var(--yellow);
+}
+.error-code .meaning { color: var(--text-dim); font-size: 13.5px; margin: 0 0 6px; }
+.error-code .action { color: var(--text); font-size: 13.5px; margin: 0; }
+
+/* ---- SEARCH RESULTS ---- */
+.search-overlay {
+  display: none;
+  position: fixed;
+  top: var(--header-h);
+  left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 95;
+}
+
+.search-results {
+  display: none;
+  position: fixed;
+  top: calc(var(--header-h) + 8px);
+  left: 50%; transform: translateX(-50%);
+  width: 520px;
+  max-width: calc(100vw - 32px);
+  max-height: 60vh;
+  overflow-y: auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  z-index: 96;
+  padding: 8px;
+}
+
+.search-results.visible { display: block; }
+.search-overlay.visible { display: block; }
+
+.search-item {
+  display: block;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--text);
+  transition: background 0.1s;
+}
+
+.search-item:hover { background: var(--accent-glow); text-decoration: none; }
+.search-item-section { font-size: 11px; color: var(--accent-light); margin-bottom: 2px; }
+.search-item-title { font-weight: 600; font-size: 14px; }
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 900px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; padding: 24px 20px 60px; }
+  .menu-toggle { display: block; }
+  .header-search { max-width: 200px; }
+  .hero h1 { font-size: 28px; }
+  .card-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .header { padding: 0 16px; }
+  .header-version { display: none; }
+  .header-search { max-width: 160px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle menu">&#9776;</button>
+  <a href="#overview" class="header-logo">
+    <div class="dot">P</div>
+    <span>PromptMotion</span>
+  </a>
+  <div class="header-search">
+    <span class="search-icon">&#128269;</span>
+    <input type="text" id="searchInput" placeholder="Search docs... (Ctrl+K)" autocomplete="off">
+  </div>
+  <span class="header-version">v1.0.1 &middot; Unity 6000.0+</span>
+</header>
+
+<!-- SEARCH -->
+<div class="search-overlay" id="searchOverlay"></div>
+<div class="search-results" id="searchResults"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Getting Started</div>
+    <a href="#overview"><span class="nav-icon">&#127968;</span> Overview</a>
+    <a href="#editions"><span class="nav-icon">&#9878;</span> Compare Editions</a>
+    <a href="#installation"><span class="nav-icon">&#10515;</span> Installation</a>
+    <a href="#quickstart-generator"><span class="nav-icon">&#9889;</span> Quick Start</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Generator</div>
+    <a href="#how-it-works"><span class="nav-icon">&#9881;</span> How It Works</a>
+    <a href="#authentication"><span class="nav-icon">&#128274;</span> Activation</a>
+    <a href="#quota"><span class="nav-icon">&#9202;</span> Free Trial</a>
+    <a href="#prompts"><span class="nav-icon">&#9999;</span> Writing Prompts</a>
+    <a href="#character-requirements"><span class="nav-icon">&#129485;</span> Character Requirements</a>
+    <a href="#generated-files"><span class="nav-icon">&#128193;</span> Generated Files</a>
+    <a href="#settings"><span class="nav-icon">&#128295;</span> Settings</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Concepts</div>
+    <a href="#humanoid"><span class="nav-icon">&#129485;</span> Humanoid Avatar</a>
+    <a href="#postprocessor"><span class="nav-icon">&#10227;</span> Auto-Import Pipeline</a>
+    <a href="#apply"><span class="nav-icon">&#10004;</span> Apply to Character</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-title">Reference</div>
+    <a href="#troubleshooting"><span class="nav-icon">&#128161;</span> Troubleshooting</a>
+    <a href="#faq"><span class="nav-icon">&#10067;</span> FAQ</a>
+    <a href="#support"><span class="nav-icon">&#128236;</span> Support</a>
+  </div>
+
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+<!-- ============================================ -->
+<!--                  HERO                        -->
+<!-- ============================================ -->
+<div class="hero" id="overview">
+  <h1>PromptMotion Lite</h1>
+  <p>Free AI text-to-animation for Unity. Generate humanoid Mecanim clips from plain-English prompts right in the Editor &mdash; 5 free lifetime generations, no purchase or account required. <strong>PromptMotion Lite - AI Animation Generator.</strong></p>
+  <div class="hero-badges">
+    <span class="badge badge-purple">Unity 6000.0+</span>
+    <span class="badge badge-green">Humanoid Mecanim</span>
+    <span class="badge badge-yellow">URP / HDRP / Built-in</span>
+    <span class="badge badge-pink">Editor Tool</span>
+  </div>
+</div>
+
+<section class="section">
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Free to try.</strong> Activate with your email to unlock 5 lifetime AI generations &mdash; no purchase, no account. When you need more, upgrade to <a href="https://u3d.as/1qyr" target="_blank" rel="noopener"><strong>PromptMotion</strong> (Standard, 50/month)</a> or <a href="https://u3d.as/1CAn" target="_blank" rel="noopener"><strong>PromptMotion Pro</strong> (150/month + Pro toolset)</a> on the Unity Asset Store.</div>
+  </div>
+
+  <div class="card-grid">
+    <a class="mini-card" href="https://u3d.as/1qyr" target="_blank" rel="noopener"><h4>&#11014; Get PromptMotion (Standard)</h4><p>50 AI generations every month. The full Generator + Library, no lifetime cap. <strong>View on the Asset Store &rarr;</strong></p></a>
+    <a class="mini-card" href="https://u3d.as/1CAn" target="_blank" rel="noopener"><h4>&#11088; Get PromptMotion Pro</h4><p>150 generations/month plus the Pro animation toolset (batch, Mecanim wiring, clip cleanup, sequencer). <strong>View on the Asset Store &rarr;</strong></p></a>
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="callout-icon">&#9888;</span>
+    <div><strong>Generation requires an internet connection and a free email activation.</strong> Generated clips are saved to your project and work offline thereafter.</div>
+  </div>
+
+  <div class="card-grid">
+    <a class="mini-card" href="#quickstart-generator"><h4>&#9889; Generator</h4><p>Online AI text-to-animation. Type a prompt, get a humanoid FBX in ~38&ndash;83 s.</p></a>
+    <a class="mini-card" href="#authentication"><h4>&#128274; Email Activation</h4><p>Enter your email, get a 6-digit code, click Activate. Free &mdash; no purchase, no account, no API keys.</p></a>
+    <a class="mini-card" href="#quota"><h4>&#9202; Free Trial</h4><p>5 lifetime generations included. Cached prompts are free. Upgrade for a monthly allowance.</p></a>
+    <a class="mini-card" href="#prompts"><h4>&#9999; Plain English Prompts</h4><p>"walking forward confidently", "waving hello with the right hand". Describe motion, not character.</p></a>
+    <a class="mini-card" href="#humanoid"><h4>&#129485; Any Humanoid Rig</h4><p>Mixamo, Synty, Quaternius, custom &mdash; if Unity calls it Humanoid, we can drive it.</p></a>
+  </div>
+
+  <p>Getting-started topics are under <a href="#installation">Installation</a> and <a href="#quickstart-generator">Quick Start</a>; the generation workflow under <a href="#how-it-works">Generator</a>; shared concepts under <a href="#humanoid">Concepts</a> and <a href="#troubleshooting">Reference</a>.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             COMPARE EDITIONS                 -->
+<!-- ============================================ -->
+<section class="section" id="editions">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#9878;</span> Compare Editions</h2>
+  <p class="section-desc">You're using <strong>Lite</strong> (free). Standard and Pro add a monthly allowance, the bundled Animation Library, and &mdash; in Pro &mdash; the animation toolset.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr>
+      <th>&nbsp;</th>
+      <th>Lite<br><span style="color:var(--text-dim);font-weight:normal;">Free (this asset)</span></th>
+      <th><a href="https://u3d.as/1qyr" target="_blank" rel="noopener">PromptMotion</a><br><span style="color:var(--text-dim);font-weight:normal;">Standard</span></th>
+      <th><a href="https://u3d.as/1CAn" target="_blank" rel="noopener">PromptMotion Pro</a><br><span style="color:var(--text-dim);font-weight:normal;">Pro</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td>Price</td><td><strong>Free</strong></td><td>Paid</td><td>Paid</td></tr>
+      <tr><td>AI generations</td><td>5 lifetime</td><td>50 / month</td><td>150 / month</td></tr>
+      <tr><td>Activation</td><td>Email code</td><td>Asset Store invoice</td><td>Asset Store invoice</td></tr>
+      <tr><td>Text-to-animation Generator</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td></tr>
+      <tr><td>Any Humanoid rig + auto-retarget</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td></tr>
+      <tr><td>Live preview, history, apply-to-character</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td></tr>
+      <tr><td>Cached prompts are free (don't count)</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td></tr>
+      <tr><td>Bundled Animation Library (starter clips)</td><td class="no">&#10007;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td></tr>
+      <tr><td>Pro toolset &mdash; batch &amp; variation generation</td><td class="no">&#10007;</td><td class="no">&#10007;</td><td class="yes">&#10003;</td></tr>
+      <tr><td>Pro toolset &mdash; Mecanim wiring (controllers + blend trees)</td><td class="no">&#10007;</td><td class="no">&#10007;</td><td class="yes">&#10003;</td></tr>
+      <tr><td>Pro toolset &mdash; clip cleanup (trim / loop / mirror / smooth)</td><td class="no">&#10007;</td><td class="no">&#10007;</td><td class="yes">&#10003;</td></tr>
+      <tr><td>Pro toolset &mdash; clip sequencer + prompt presets</td><td class="no">&#10007;</td><td class="no">&#10007;</td><td class="yes">&#10003;</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="card-grid">
+    <a class="mini-card" href="https://u3d.as/1qyr" target="_blank" rel="noopener"><h4>&#11014; Get PromptMotion (Standard)</h4><p>50 AI generations/month + the bundled Library. <strong>View on the Asset Store &rarr;</strong></p></a>
+    <a class="mini-card" href="https://u3d.as/1CAn" target="_blank" rel="noopener"><h4>&#11088; Get PromptMotion Pro</h4><p>150/month + the Pro animation toolset (batch, Mecanim wiring, clip cleanup, sequencer). <strong>View on the Asset Store &rarr;</strong></p></a>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             INSTALLATION                     -->
+<!-- ============================================ -->
+<section class="section" id="installation">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#10515;</span> Installation</h2>
+  <p class="section-desc">Import once. The Generator window lights up immediately.</p>
+
+  <h3>From the Unity Asset Store</h3>
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Open Package Manager</strong><br>In Unity 6000.0 or later, open <code>Window &rarr; Package Manager</code> and switch the dropdown to <strong>My Assets</strong>.</div></div>
+    <div class="step"><div class="step-content"><strong>Find PromptMotion, click Download then Import</strong><br>Accept the import dialog with everything checked. The package lands at <code>Assets/PromptMotion/</code>.</div></div>
+    <div class="step"><div class="step-content"><strong>Wait for compile</strong><br>Unity recompiles editor scripts. The first time takes ~30 s; subsequent imports are faster.</div></div>
+    <div class="step"><div class="step-content"><strong>Open the window</strong><br><code>Window &rarr; PromptMotion &rarr; Generator</code>.</div></div>
+  </div>
+
+  <h3>Prerequisites</h3>
+  <p>PromptMotion uses two Unity packages that ship with a default Unity 6 install:</p>
+  <ul>
+    <li><code>com.unity.editorcoroutines</code> &ge; 1.0.0</li>
+    <li><code>com.unity.nuget.newtonsoft-json</code> &ge; 3.2.1</li>
+  </ul>
+  <p>If your project doesn't already have <code>Newtonsoft.Json</code>, Unity prompts to add it on first import. Click <strong>Yes</strong>.</p>
+
+  <h3>What gets installed</h3>
+  <pre><code><span class="kw">Assets/PromptMotion/</span>
+  Generator/                  <span class="cm">// AI generator window + auth + HTTP</span>
+    Editor/
+  Shared/                     <span class="cm">// ClipApplier, Avatar validators, Preview viewport</span>
+  Generated/                  <span class="cm">// Output folder created on first generation</span>
+    Controllers/              <span class="cm">// Per-character AnimatorControllers</span>
+  Documentation/              <span class="cm">// You are here</span><span class="lang-tag">Project</span></code></pre>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>No character is bundled.</strong> You bring your own Humanoid rig &mdash; anything from Mixamo, Synty, Quaternius, or a custom skeleton works as long as the Avatar is configured as Humanoid. Generated clips retarget to whatever you provide.</div>
+  </div>
+
+</section>
+
+<!-- ============================================ -->
+<!--          QUICK START - GENERATOR             -->
+<!-- ============================================ -->
+<section class="section" id="quickstart-generator">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#9889;</span> Quick Start: Generator</h2>
+  <p class="section-desc">Zero to your first generated clip in about a minute (plus generation time).</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-content"><strong>Open the Generator window</strong><br>Menu: <code>Window &rarr; PromptMotion &rarr; Generator</code>.</div></div>
+    <div class="step"><div class="step-content"><strong>Activate with your email</strong><br>Enter your email in the banner and click <strong>Send code</strong>. We email you a 6-digit code (valid 15 minutes); type it in and click <strong>Activate</strong>. This unlocks 5 free lifetime generations &mdash; no purchase or account required.</div></div>
+    <div class="step"><div class="step-content"><strong>Assign a character</strong><br>Select a Humanoid character in your scene Hierarchy, or drag a prefab into the character slot. The window validates the rig and shows a green checkmark when ready.</div></div>
+    <div class="step"><div class="step-content"><strong>Type a prompt</strong><br>Describe the motion: <em>"walking forward confidently"</em>, <em>"sitting down on a chair, then standing back up"</em>, <em>"waving hello with the right hand"</em>. Set duration (1&ndash;10 s; default 4 s).</div></div>
+    <div class="step"><div class="step-content"><strong>Click &#9889; Generate</strong><br>Wait ~38 s (warm) or ~83 s (cold start). The button counts elapsed seconds. When done, the FBX is saved under <code>Assets/PromptMotion/Generated/</code> and the clip is auto-applied to your character.</div></div>
+    <div class="step"><div class="step-content"><strong>Hit Play</strong><br>Press Play in the Unity editor to see the clip on your character. See <a href="#how-it-works">How It Works</a> for what happens behind the scenes.</div></div>
+  </div>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Cache hits are free.</strong> Identical <code>(prompt, duration, seed)</code> returns the previously-generated FBX in milliseconds and uses <strong>none</strong> of your free generations. The status banner reads <code>&#10003; Cached result &mdash; no allowance used</code>.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--             HOW IT WORKS                     -->
+<!-- ============================================ -->
+<section class="section" id="how-it-works">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#9881;</span> How It Works</h2>
+  <p class="section-desc">A single round-trip from the Editor to the PromptMotion backend.</p>
+
+  <div class="flow">
+    <span class="flow-node">Prompt</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Backend</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Kimodo</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Retarget</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">FBX</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Auto-Import</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node">Apply</span>
+  </div>
+
+  <ol>
+    <li>You type a prompt and click <strong>&#9889; Generate</strong>.</li>
+    <li>The window posts <code>{ prompt, duration_seconds, seed }</code> to <code>https://api.promptmotion.dev/prod/generate</code> with your activation email as authentication.</li>
+    <li>The backend runs the prompt through NVIDIA's Kimodo (SOMA-RP) text-to-motion model.</li>
+    <li>The raw motion is retargeted to a standard Humanoid skeleton on the server.</li>
+    <li>The server returns a Mecanim-ready <code>.fbx</code> file.</li>
+    <li>The client saves the FBX under <code>Assets/PromptMotion/Generated/</code>. An <code>AssetPostprocessor</code> auto-configures it as <em>Animation Type: Humanoid</em>.</li>
+    <li>The window applies the resulting <code>AnimationClip</code> to your selected character via <code>ClipApplier</code>.</li>
+  </ol>
+
+  <p>You don't need to know anything about Kimodo, retargeting, or import settings &mdash; the pipeline is fully automated. The output is a standard Unity <code>AnimationClip</code>; you can edit, blend, retarget, mask, or layer it like any other clip.</p>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>Generation is editor-only.</strong> Once an FBX is on disk, the asset is just an <code>AnimationClip</code> and works in any build target Unity supports (standalone, mobile, console, WebGL). You can't generate <em>new</em> animations from a runtime build.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--                ACTIVATION                   -->
+<!-- ============================================ -->
+<section class="section" id="authentication">
+  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#128274;</span> Activation</h2>
+  <p class="section-desc">A free email activation unlocks the trial. No purchase, no signup, no API key.</p>
+
+  <h3>How activation works</h3>
+  <ol>
+    <li>Enter your email in the Generator banner and click <strong>Send code</strong>.</li>
+    <li>We email you a 6-digit code (valid 15 minutes).</li>
+    <li>Type the code in and click <strong>Activate</strong>. That unlocks 5 free lifetime generations.</li>
+  </ol>
+  <p>Your email is used only to grant one free trial and prevent abuse &mdash; it is never used for marketing or shared with third parties.</p>
+
+  <h3>Reinstalling, or moving to another machine</h3>
+  <p>Your 5 free generations are tied to your email. Just enter the <strong>same email</strong> again on the new install &mdash; we recognise the existing trial and restore it instantly, no new code required. (<code>Window &rarr; PromptMotion &rarr; Reset Activation</code> clears the locally-stored email if you ever need to re-enter it.)</p>
+
+  <h3>One free trial per machine</h3>
+  <p>The free trial is one-per-install: entering a <em>different</em> email on a machine that already activated one won't grant another 5 generations. For more, upgrade to <a href="https://u3d.as/1qyr" target="_blank" rel="noopener">PromptMotion</a> (50/month) or <a href="https://u3d.as/1CAn" target="_blank" rel="noopener">PromptMotion Pro</a> (150/month).</p>
+
+  <h3>What gets sent to the server</h3>
+  <p>Only this:</p>
+  <ul>
+    <li>Your activation email and a per-install activation code (HTTPS, in the JSON body).</li>
+    <li>The prompt text you typed.</li>
+    <li>Duration and optional seed.</li>
+    <li>A client version string.</li>
+  </ul>
+  <p>Not sent: real name, IP (other than what's inherent to HTTPS), Unity Editor analytics, scene contents, or any telemetry beyond the above.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             QUOTA & TIERS                    -->
+<!-- ============================================ -->
+<section class="section" id="quota">
+  <h2><span class="section-icon" style="background:var(--yellow-dim);color:var(--yellow)">&#9202;</span> Free Trial</h2>
+  <p class="section-desc">5 lifetime generations included. Cached prompts use none of your trial.</p>
+
+  <h3>How the trial works</h3>
+  <p>Every successful generation uses one of your 5 free lifetime generations. Cached results &mdash; identical <code>(prompt, duration, seed)</code> &mdash; do not count. The trial is a one-time lifetime allowance, not a monthly reset.</p>
+  <p>The Ready banner shows your remaining count, for example: <code>3 of 5 free generations remaining</code>.</p>
+
+  <h3>What happens when the trial is used up</h3>
+  <ul>
+    <li>The banner indicates the free trial is used up and offers upgrade options.</li>
+    <li>Existing generations and cached prompts continue to work &mdash; only <em>new</em> generations are paused.</li>
+    <li>Clips you already generated remain in your project and keep working.</li>
+    <li>To keep generating, upgrade to <a href="https://u3d.as/1qyr" target="_blank" rel="noopener"><strong>PromptMotion</strong> (50 generations/month)</a> or <a href="https://u3d.as/1CAn" target="_blank" rel="noopener"><strong>PromptMotion Pro</strong> (150/month plus a Pro animation toolset)</a> on the Unity Asset Store &mdash; see <a href="#editions">Compare Editions</a>.</li>
+  </ul>
+</section>
+
+<!-- ============================================ -->
+<!--             WRITING PROMPTS                  -->
+<!-- ============================================ -->
+<section class="section" id="prompts">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#9999;</span> Writing Prompts</h2>
+  <p class="section-desc">Describe the motion. The model never sees your character.</p>
+
+  <h3>Prompts that work well</h3>
+  <ul>
+    <li><em>"walking forward confidently"</em></li>
+    <li><em>"running and jumping over a low obstacle"</em></li>
+    <li><em>"sitting down on a chair, then standing back up"</em></li>
+    <li><em>"waving hello with the right hand"</em></li>
+    <li><em>"stumbling backwards as if pushed"</em></li>
+    <li><em>"crouching slowly, then aiming a bow"</em></li>
+  </ul>
+
+  <h3>Prompts that work less well</h3>
+  <ul>
+    <li><strong>Character descriptions</strong> &mdash; <em>"a tall warrior"</em>: ignored. The model sees motion verbs only.</li>
+    <li><strong>Camera or shot direction</strong> &mdash; <em>"close-up of feet"</em>: output is a clip, not a render.</li>
+    <li><strong>Multi-character interactions</strong> &mdash; <em>"two people fighting"</em>: output is one humanoid.</li>
+    <li><strong>Specific timing</strong> &mdash; <em>"walk for 1.7 s, then turn"</em>: duration is set by the slider; phasing is approximate.</li>
+  </ul>
+
+  <h3>Current model limitations</h3>
+  <div class="card-grid">
+    <div class="card"><div class="card-title">&#9995; No fingers</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Hand pose is a fixed default. The model doesn't pose individual fingers.</p></div>
+    <div class="card"><div class="card-title">&#128528; No facial animation</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">Output is body skeleton only. Faces stay neutral.</p></div>
+    <div class="card"><div class="card-title">&#128100; Single character</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">No interactions with other rigs, props, or scene geometry.</p></div>
+    <div class="card"><div class="card-title">&#9202; Approximate length</div><p style="color:var(--text-dim);font-size:13.5px;margin:0;">If your prompt's natural length is shorter than the duration, the model may pad with idling. Pick a duration that matches.</p></div>
+  </div>
+
+  <h3>Duration &amp; seed</h3>
+  <p><strong>Duration:</strong> integer between 1 and 10 seconds. Longer clips take slightly longer to generate but use the same single generation from your trial.</p>
+  <p><strong>Seed:</strong> leave blank to let the server randomize. Set a specific integer to make the output reproducible &mdash; same prompt + same duration + same seed = same FBX (and a cache hit).</p>
+
+  <div class="callout callout-tip">
+    <span class="callout-icon">&#128161;</span>
+    <div><strong>Commit to specific wording.</strong> Cache keys are exact-match on <code>(prompt, duration, seed)</code>. Whitespace and capitalisation differences produce distinct cache entries. Typo'ing the same phrase twice uses two of your free generations.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--          CHARACTER REQUIREMENTS              -->
+<!-- ============================================ -->
+<section class="section" id="character-requirements">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#129485;</span> Character Requirements</h2>
+  <p class="section-desc">Both tools require a Humanoid rig. Generic skeletons aren't supported in v1.0.</p>
+
+  <h3>What "Humanoid" means here</h3>
+  <ul>
+    <li>The character has an <code>Animator</code> component.</li>
+    <li>Its Avatar is configured with <strong>Animation Type = Humanoid</strong> (Import Settings &rarr; <strong>Rig</strong> tab).</li>
+    <li>Unity reports the Avatar as valid (no broken bone mappings).</li>
+  </ul>
+
+  <h3>Validator badges</h3>
+  <p>Drop a character into the slot and the window checks:</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Badge</th><th>State</th><th>What to do</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag tag-optional">&#10003; Valid</span></td><td>Animator + valid Humanoid Avatar present.</td><td>Ready to generate / apply.</td></tr>
+      <tr><td><span class="tag tag-platform">&#9888; No Avatar</span></td><td>Rig has bones but the Avatar slot is empty.</td><td>Click <strong>Auto-Configure</strong> to build one from bone names.</td></tr>
+      <tr><td><span class="tag tag-required">&#10007; No Animator</span></td><td>The GameObject has no <code>Animator</code>.</td><td>Add an Animator component, assign a Humanoid Avatar.</td></tr>
+      <tr><td><span class="tag tag-required">&#10007; Generic</span></td><td>Avatar is configured but as Generic, not Humanoid.</td><td>Re-import the model with Animation Type = Humanoid.</td></tr>
+      <tr><td><span class="tag tag-required">&#10007; Invalid bone mapping</span></td><td>Avatar exists but Unity considers it broken.</td><td>Re-import the model.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>T-pose preferred</h3>
+  <p>Characters configured from a clean T-pose retarget cleanest. A-pose works but may produce slight shoulder offset on extreme clips. Bind-pose-flopped rigs (one arm forward) often produce wrong shoulder rotation &mdash; re-import in T-pose if you see shoulders pop.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             GENERATED FILES                  -->
+<!-- ============================================ -->
+<section class="section" id="generated-files">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128193;</span> Generated Files</h2>
+  <p class="section-desc">Where things land, how they're named, what else gets created.</p>
+
+  <h3>Output location</h3>
+  <p>Every generated FBX lands in:</p>
+  <pre><code><span class="kw">Assets</span>/<span class="kw">PromptMotion</span>/<span class="kw">Generated</span>/<span class="lang-tag">Path</span></code></pre>
+
+  <h3>Naming convention</h3>
+  <p>Each filename embeds the backend's job id, e.g. <code>job_a8f3c1e9.fbx</code>. The job id is unique per generation; cache hits return the same file rather than producing a duplicate.</p>
+
+  <h3>What gets created besides the FBX</h3>
+  <ul>
+    <li><strong>The FBX</strong> at <code>Assets/PromptMotion/Generated/{job_id}.fbx</code>, auto-imported as Humanoid.</li>
+    <li><strong>An Animator Controller</strong> at <code>Assets/PromptMotion/Generated/Controllers/{character}_Controller.controller</code>, one per character. Re-applying clips to the same character updates this same file.</li>
+  </ul>
+
+  <h3>Regenerating with the same prompt</h3>
+  <p>If the cache key matches, no new file is created &mdash; the existing FBX is returned. If the seed changes (or you click <strong>Random</strong>), a fresh FBX is written under a new job id; both files coexist.</p>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>The Generated/ folder is yours.</strong> Move clips into a tracked subfolder if you want them in version control. The folder is <code>.gitignore</code>d by default to keep churn out of repos used by teams.</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--                 SETTINGS                     -->
+<!-- ============================================ -->
+<section class="section" id="settings">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128295;</span> Settings</h2>
+  <p class="section-desc">A single ScriptableObject configures the Generator. No secrets, safe to commit.</p>
+
+  <p>Settings live as a ScriptableObject at <code>Assets/PromptMotion/Generator/Editor/Settings/Settings.asset</code>. Select it in the Project window to edit in the Inspector.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>Base Url</code></td><td><code>https://api.promptmotion.dev</code></td><td>The backend endpoint. Override only if you're running a self-hosted backend.</td></tr>
+      <tr><td><code>Output Folder</code></td><td><code>Assets/PromptMotion/Generated</code></td><td>Where downloaded FBXes land. Must be inside <code>Assets/</code>.</td></tr>
+      <tr><td><code>Default Duration Seconds</code></td><td><code>4</code></td><td>Pre-fill for the duration slider on a fresh prompt.</td></tr>
+      <tr><td><code>Verify Timeout Seconds</code></td><td><code>10</code></td><td>How long to wait for invoice probe / bind responses.</td></tr>
+      <tr><td><code>Status Timeout Seconds</code></td><td><code>10</code></td><td>How long to wait for status / refresh calls.</td></tr>
+      <tr><td><code>Generate Timeout Seconds</code></td><td><code>180</code></td><td>Cap for the generation request. Cold starts can hit ~83 s; 180 s leaves headroom.</td></tr>
+      <tr><td><code>Verbose Logging</code></td><td><code>false</code></td><td>Logs every step (window open, generation start/complete, account refresh, import config) to the Console with <code>[PromptMotion]</code> prefix. Warnings and errors always log regardless.</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>Your activation email is stored separately in <code>EditorPrefs</code> and is never written to an asset.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             HUMANOID AVATAR                  -->
+<!-- ============================================ -->
+<section class="section" id="humanoid">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#129485;</span> Humanoid Avatar System</h2>
+  <p class="section-desc">Why the asset is Humanoid-only, and how to fix Generic-rig issues.</p>
+
+  <p>PromptMotion relies on Unity's Humanoid Avatar system to retarget a generic skeleton onto whatever character you provide. A few things worth knowing:</p>
+
+  <h3>Why Humanoid and not Generic</h3>
+  <p>Humanoid is a normalized rig: Unity maps any compatible skeleton to its standard 15 bones (hips, spine, chest, neck, head, shoulders, upper/lower arms, hands, upper/lower legs, feet). A clip authored on a normalized rig retargets to <em>any</em> Humanoid character without manual bone mapping. Generic clips are tied to the source skeleton and don't transfer cleanly.</p>
+
+  <h3>What Unity needs from your rig</h3>
+  <ul>
+    <li>A skeleton with bones named in any pattern Unity recognises (most do, including Mixamo, Synty, Quaternius, and most CC-licensed rigs).</li>
+    <li>Animation Type set to <strong>Humanoid</strong> in the model's Import Settings &mdash; <strong>Rig</strong> tab.</li>
+    <li>An Avatar sub-asset embedded in the FBX (Unity creates this when you switch to Humanoid).</li>
+    <li>An <code>Animator</code> component on the character GameObject with the Avatar slot filled.</li>
+  </ul>
+
+  <h3>Generic-rig fix</h3>
+  <p>If your character imports as Generic by default and PromptMotion rejects it, re-import:</p>
+  <div class="steps">
+    <div class="step"><div class="step-content">Select the model FBX in the Project window.</div></div>
+    <div class="step"><div class="step-content">Open the Inspector, click the <strong>Rig</strong> tab.</div></div>
+    <div class="step"><div class="step-content">Change <strong>Animation Type</strong> to <strong>Humanoid</strong>.</div></div>
+    <div class="step"><div class="step-content">Leave <strong>Avatar Definition</strong> as <em>Create From This Model</em>.</div></div>
+    <div class="step"><div class="step-content">Click <strong>Apply</strong>. Unity will rebuild the Avatar and report any unmapped bones in the configuration dialog.</div></div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--           AUTO-IMPORT PIPELINE               -->
+<!-- ============================================ -->
+<section class="section" id="postprocessor">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#10227;</span> Auto-Import Pipeline</h2>
+  <p class="section-desc">An AssetPostprocessor configures every Generated FBX so you don't have to.</p>
+
+  <h3>What MotionFbxPostprocessor does</h3>
+  <p>For every FBX under <code>Assets/PromptMotion/Generated/</code>:</p>
+  <ul>
+    <li>Sets <strong>Animation Type = Humanoid</strong>.</li>
+    <li>Sets <strong>Avatar Definition = Create From This Model</strong>.</li>
+    <li>Disables mesh, material, camera, and light import (the file is animation-only).</li>
+    <li>Preserves the bone hierarchy as-is.</li>
+    <li>Logs the configuration to the Console when Verbose Logging is on.</li>
+  </ul>
+
+  <p>Files outside <code>Generated/</code> are not touched &mdash; your own model imports are left alone.</p>
+
+  <h3>Opting out</h3>
+  <p>If you want a Generated FBX to use different import settings, move it out of the Generated folder. The postprocessor only fires on first import and on re-import &mdash; once a file is moved elsewhere, the standard Unity Import Settings panel takes over.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             APPLY TO CHARACTER               -->
+<!-- ============================================ -->
+<section class="section" id="apply">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#10004;</span> Apply to Character</h2>
+  <p class="section-desc">From "I have an AnimationClip" to "the clip is wired into a controller."</p>
+
+  <p><code>ClipApplier</code> handles everything from clip-in-hand to clip-on-character. The Generator uses it automatically after each generation to wire the new clip into your character's Animator.</p>
+
+  <h3>Three cases handled identically</h3>
+  <ul>
+    <li><strong>Prefab asset</strong> &mdash; the prefab in the Project window is opened with <code>PrefabUtility.LoadPrefabContents</code>, edited, then saved with <code>SaveAsPrefabAsset</code>.</li>
+    <li><strong>Prefab instance</strong> in a scene &mdash; modifications are recorded with <code>Undo.RecordObject</code> so they're persisted on the instance.</li>
+    <li><strong>Plain scene GameObject</strong> &mdash; the scene object is edited directly.</li>
+  </ul>
+
+  <h3>What gets created</h3>
+  <div class="steps">
+    <div class="step"><div class="step-content">An <code>Animator</code> component is added to the character if one isn't present.</div></div>
+    <div class="step"><div class="step-content">If the Animator's Avatar slot is empty, a Humanoid Avatar is auto-detected from a <code>SkinnedMeshRenderer</code> descendant.</div></div>
+    <div class="step"><div class="step-content">A per-character AnimatorController is loaded or created at <code>Assets/PromptMotion/Generated/Controllers/{character}_Controller.controller</code>.</div></div>
+    <div class="step"><div class="step-content">The new clip is added as a state in the Base Layer. The first state added becomes the default state.</div></div>
+  </div>
+
+  <h3>Idempotent</h3>
+  <p>Re-applying the same clip updates the existing state rather than duplicating it. Apply a different clip and a new state is added without disturbing the others.</p>
+
+  <h3>When auto-apply fails</h3>
+  <p>If the selection isn't a Humanoid character or doesn't have a SkinnedMeshRenderer the validator can find an Avatar from, the window shows a HelpBox with the saved FBX path and instructions to drag the clip in manually. The FBX is on disk either way &mdash; auto-apply is just a convenience.</p>
+</section>
+
+<!-- ============================================ -->
+<!--             TROUBLESHOOTING                  -->
+<!-- ============================================ -->
+<section class="section" id="troubleshooting">
+  <h2><span class="section-icon" style="background:var(--pink-dim);color:var(--pink)">&#128161;</span> Troubleshooting</h2>
+  <p class="section-desc">Every error code, what it means, and how to recover.</p>
+
+  <p>The Generator window shows a status banner with a code-mapped message and a recovery button whenever something goes wrong. Twelve codes total &mdash; ten reported by the server, two emitted client-side.</p>
+
+  <h3>Server-reported codes</h3>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>TRIAL_CODE_INVALID</code><span class="tag tag-required">Action required</span></div>
+    <p class="meaning">The 6-digit code you entered doesn't match (or too many wrong attempts locked it).</p>
+    <p class="action"><strong>What to do:</strong> Re-check the digits from your email. If it keeps failing, click <strong>Resend code</strong> for a fresh one.</p>
+  </div>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>TRIAL_CODE_EXPIRED</code><span class="tag tag-required">Action required</span></div>
+    <p class="meaning">Codes are valid for 15 minutes; this one has expired.</p>
+    <p class="action"><strong>What to do:</strong> Click <strong>Resend code</strong> to get a new one.</p>
+  </div>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>TRIAL_ALREADY_USED</code><span class="tag tag-required">Action required</span></div>
+    <p class="meaning">This email (or this install) has already used its free trial.</p>
+    <p class="action"><strong>What to do:</strong> Use a different email, or upgrade to <a href="https://u3d.as/1qyr" target="_blank" rel="noopener">PromptMotion</a> / <a href="https://u3d.as/1CAn" target="_blank" rel="noopener">PromptMotion Pro</a> for a monthly allowance.</p>
+  </div>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>QUOTA_EXHAUSTED</code><span class="tag tag-required">Action required</span></div>
+    <p class="meaning">You've used all 5 of your free lifetime generations.</p>
+    <p class="action"><strong>What to do:</strong> Upgrade to <a href="https://u3d.as/1qyr" target="_blank" rel="noopener">PromptMotion</a> (50/month) or <a href="https://u3d.as/1CAn" target="_blank" rel="noopener">PromptMotion Pro</a> (150/month) to keep generating. Your already-generated clips remain in your project.</p>
+  </div>
+
+  <div class="error-code auto-retry">
+    <div class="error-code-head"><code>RATE_LIMITED</code><span class="tag tag-platform">Auto-retry</span></div>
+    <p class="meaning">Too many requests in a short window.</p>
+    <p class="action"><strong>What to do:</strong> The window auto-retries once after the cooldown shown in the status. If the second attempt also fails, wait a minute and click <strong>Try again</strong>.</p>
+  </div>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>UPSTREAM_ERROR</code><span class="tag tag-platform">Recoverable</span></div>
+    <p class="meaning">The generation model failed.</p>
+    <p class="action"><strong>What to do:</strong> No quota was used. Click <strong>Try again</strong>. If it persists, vary the prompt slightly &mdash; some inputs reproducibly upset the model.</p>
+  </div>
+
+  <div class="error-code auto-retry">
+    <div class="error-code-head"><code>SERVICE_UNAVAILABLE</code><span class="tag tag-platform">Auto-retry</span></div>
+    <p class="meaning">The backend is busy or warming up.</p>
+    <p class="action"><strong>What to do:</strong> The window auto-retries after the cooldown. If the second attempt also fails, try again in a few minutes.</p>
+  </div>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>SERVER_ERROR</code><span class="tag tag-required">Action required</span></div>
+    <p class="meaning">An unexpected backend error.</p>
+    <p class="action"><strong>What to do:</strong> Try again in a few minutes. If it persists, email <a href="mailto:ragendom@gmail.com">ragendom@gmail.com</a> with the timestamp from the Console.</p>
+  </div>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>BAD_REQUEST</code><span class="tag tag-platform">Recoverable</span></div>
+    <p class="meaning">Something is malformed in the request.</p>
+    <p class="action"><strong>What to do:</strong> Most often an empty prompt &mdash; type something descriptive and try again.</p>
+  </div>
+
+  <h3>Client-side codes</h3>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>NetworkError</code><span class="tag tag-platform">Recoverable</span></div>
+    <p class="meaning">The client couldn't reach the server.</p>
+    <p class="action"><strong>What to do:</strong> Check your internet connection, firewall, or VPN. See the <a href="#network-checklist">network checklist</a> below if you're behind a corporate firewall.</p>
+  </div>
+
+  <div class="error-code">
+    <div class="error-code-head"><code>Timeout</code><span class="tag tag-platform">Recoverable</span></div>
+    <p class="meaning">The request took longer than <code>GenerateTimeoutSeconds</code> (default 180 s).</p>
+    <p class="action"><strong>What to do:</strong> The server may be overloaded. Try again, or increase the timeout in <code>Settings.asset</code>.</p>
+  </div>
+
+  <h3>Common issues</h3>
+
+  <details>
+    <summary>Character validation fails</summary>
+    <div class="details-body">
+      <p>The character isn't a valid Humanoid. See <a href="#character-requirements">Character Requirements</a>. Most often: Animation Type is set to Generic instead of Humanoid in the model's Rig tab. Re-import as Humanoid.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Preview is black</summary>
+    <div class="details-body">
+      <p>Almost always a render-pipeline interaction with the preview viewport. Enable Verbose Logging in <code>Settings.asset</code> to see what's happening. The clip generated correctly &mdash; only the in-editor preview is affected. Drag the FBX onto your character in the scene Hierarchy to see it animate normally.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Generation hangs</summary>
+    <div class="details-body">
+      <p>Click <strong>Cancel</strong> in the window and try again. If the second attempt also hangs, persistent failure usually means the <code>BaseUrl</code> in Settings is misconfigured &mdash; check it points to <code>https://api.promptmotion.dev</code>.</p>
+    </div>
+  </details>
+
+  <h3 id="network-checklist">Network checklist</h3>
+  <p>If you're behind a corporate firewall, whitelist:</p>
+  <ul>
+    <li><code>https://api.promptmotion.dev</code> (HTTPS, port 443) &mdash; the production backend.</li>
+    <li>Any CDN your firewall flags during the FBX download response &mdash; the file is served by the same domain.</li>
+  </ul>
+  <p>The asset uses Unity's standard <code>UnityWebRequest</code>, which respects your system proxy. No custom protocols, no WebSocket, no peer-to-peer.</p>
+</section>
+
+<!-- ============================================ -->
+<!--                  FAQ                         -->
+<!-- ============================================ -->
+<section class="section" id="faq">
+  <h2><span class="section-icon" style="background:var(--blue-dim);color:var(--blue)">&#10067;</span> FAQ</h2>
+  <p class="section-desc">Quick answers to the questions that come up most.</p>
+
+  <details open>
+    <summary>Can I use PromptMotion without internet?</summary>
+    <div class="details-body">
+      <p><strong>To generate, no.</strong> Generation is a server round-trip and requires HTTPS access to the backend (and a free email activation).</p>
+      <p>Clips you've <em>already</em> generated are plain Unity <code>AnimationClip</code> assets in your project &mdash; those work offline, in Play mode, and in builds.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Are generated animations royalty-free for commercial use?</summary>
+    <div class="details-body">
+      <p>Yes. You own the generated outputs and can ship them in commercial projects without attribution. The underlying generation model disclaims ownership of generated content; commercial use is permitted.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>What happens when I use up my free trial?</summary>
+    <div class="details-body">
+      <p>New generations pause once all 5 free generations are used. Existing FBXes and cached prompts continue to work. To keep generating, upgrade to <a href="https://u3d.as/1qyr" target="_blank" rel="noopener">PromptMotion</a> (50/month) or <a href="https://u3d.as/1CAn" target="_blank" rel="noopener">PromptMotion Pro</a> (150/month) &mdash; see <a href="#editions">Compare Editions</a>.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>What if the service is down?</summary>
+    <div class="details-body">
+      <p>Generation is paused until it's back &mdash; transient errors auto-retry, and failed generations never consume a free generation. Clips you've already generated are unaffected. If an outage looks prolonged, email <a href="mailto:ragendom@gmail.com">ragendom@gmail.com</a>.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>How do I cancel a generation in progress?</summary>
+    <div class="details-body">
+      <p>Click the <strong>Cancel</strong> button that appears in the window during generation. The request is aborted client-side; no quota is consumed for cancelled requests.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Can I use a different character?</summary>
+    <div class="details-body">
+      <p>Yes &mdash; any Humanoid character works. Mixamo, Synty, Quaternius, custom rigs &mdash; if Unity recognises it as Humanoid, PromptMotion can target it.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Does this work in builds / at runtime?</summary>
+    <div class="details-body">
+      <p>Generation is editor-only. Once an FBX is generated, the asset is just an <code>AnimationClip</code> and works in any build target Unity supports &mdash; standalone, mobile, console, WebGL.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Can I use this with HDRP?</summary>
+    <div class="details-body">
+      <p>Yes. The package is render-pipeline-agnostic. It produces standard Mecanim clips that work with URP, HDRP, and Built-in.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>My team has multiple developers. Do we each need a license?</summary>
+    <div class="details-body">
+      <p>Yes. Per Unity Asset Store policy, each seat that uses the asset needs its own license.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Why does the same prompt return "Cached"?</summary>
+    <div class="details-body">
+      <p>Identical <code>(prompt, duration, seed)</code> produces a cache hit. Cache hits are free and use none of your free generations. If you want a fresh result, change the seed (or click <strong>Random</strong>).</p>
+    </div>
+  </details>
+</section>
+
+<!-- ============================================ -->
+<!--                SUPPORT                       -->
+<!-- ============================================ -->
+<section class="section" id="support">
+  <h2><span class="section-icon" style="background:var(--accent-glow);color:var(--accent-light)">&#128236;</span> Support</h2>
+  <p class="section-desc">Need help? We're here for you.</p>
+
+  <div class="card" style="text-align:center;padding:40px 24px;">
+    <div style="font-size:48px;margin-bottom:16px;">&#128231;</div>
+    <h3 style="border:none;margin-top:0;padding:0;text-align:center;">Get in Touch</h3>
+    <p style="color:var(--text-dim);max-width:480px;margin:8px auto 24px;">Bug reports, feature requests, licensing questions &mdash; reach out and we'll get back to you.</p>
+    <a href="mailto:ragendom@gmail.com" style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,var(--accent),var(--pink));color:#fff;text-decoration:none;border-radius:var(--radius-sm);font-weight:700;font-size:15px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+      &#9993; ragendom@gmail.com
+    </a>
+    <p style="color:var(--text-dim);font-size:13px;margin-top:16px;">We typically respond within 24&ndash;48 hours.</p>
+  </div>
+
+  <div class="card-grid" style="margin-top:16px;">
+    <div class="card">
+      <div class="card-title">&#128172; Before contacting</div>
+      <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:1.9;">
+        <li>Check the <a href="#troubleshooting">Troubleshooting</a> section</li>
+        <li>Refresh your trial status via <strong>Refresh</strong> in the banner</li>
+        <li>Try the request twice &mdash; auto-retry resolves most transient errors</li>
+        <li>Enable <strong>Verbose Logging</strong> in Settings to capture context</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">&#128203; Helpful info to include</div>
+      <ul style="padding-left:20px;color:var(--text-dim);font-size:14px;line-height:1.9;">
+        <li>Unity version (e.g. <code>6000.0.30f1</code>)</li>
+        <li>PromptMotion version (<strong>v1.0.1</strong>)</li>
+        <li>Render pipeline (Built-in / URP / HDRP)</li>
+        <li>Steps to reproduce + Console output</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="callout-icon">&#9432;</span>
+    <div><strong>PromptMotion Lite is free</strong> &mdash; there's nothing to refund. When you're ready for more, <a href="https://u3d.as/1qyr" target="_blank" rel="noopener">PromptMotion</a> (50 generations/month) and <a href="https://u3d.as/1CAn" target="_blank" rel="noopener">PromptMotion Pro</a> (150/month plus a Pro animation toolset) are available on the Unity Asset Store.</div>
+  </div>
+
+  <div class="callout callout-tip" style="margin-top:20px;">
+    <span class="callout-icon">&#11088;</span>
+    <div><strong>Enjoying PromptMotion Lite?</strong> A <a href="https://u3d.as/409N" target="_blank" rel="noopener">review on the Unity Asset Store</a> helps other developers discover it and helps us keep improving it &mdash; thank you!</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div style="border-top:1px solid var(--border);padding-top:32px;margin-top:48px;text-align:center;color:var(--text-dim);font-size:13px;">
+  <p>PromptMotion v1.0.1 &middot; Built for Unity 6000.0+</p>
+  <p style="margin-top:8px;">Powered by NVIDIA Kimodo (SOMA-RP-v1) &middot; Support: <a href="mailto:ragendom@gmail.com" style="color:var(--accent-light);text-decoration:none;">ragendom@gmail.com</a></p>
+</div>
+
+</main>
+
+<!-- SCRIPTS -->
+<script>
+// Search functionality
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+const searchOverlay = document.getElementById('searchOverlay');
+
+const sections = [];
+document.querySelectorAll('.section, .hero').forEach(s => {
+  const h2 = s.querySelector('h2');
+  const h1 = s.querySelector('h1');
+  const desc = s.querySelector('.section-desc');
+  const h3s = s.querySelectorAll('h3');
+  const id = s.id || (s.parentElement && s.parentElement.id) || '';
+  if (!id) return;
+  sections.push({
+    id: id,
+    title: h2 ? h2.textContent.trim() : (h1 ? h1.textContent.trim() : ''),
+    desc: desc ? desc.textContent.trim() : '',
+    content: s.textContent.toLowerCase(),
+    h3: Array.from(h3s).map(h => h.textContent.trim())
+  });
+});
+
+searchInput.addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  if (q.length < 2) {
+    searchResults.classList.remove('visible');
+    searchOverlay.classList.remove('visible');
+    return;
+  }
+  const matches = sections.filter(s => s.content.includes(q)).slice(0, 8);
+  if (matches.length === 0) {
+    searchResults.innerHTML = '<div style="padding:16px;color:var(--text-dim);text-align:center;">No results found</div>';
+  } else {
+    searchResults.innerHTML = matches.map(m => {
+      const matchH3 = m.h3.find(h => h.toLowerCase().includes(q));
+      return '<a href="#' + m.id + '" class="search-item" onclick="closeSearch()">' +
+        '<div class="search-item-section">' + m.title + '</div>' +
+        '<div class="search-item-title">' + (matchH3 || m.desc || m.title) + '</div>' +
+      '</a>';
+    }).join('');
+  }
+  searchResults.classList.add('visible');
+  searchOverlay.classList.add('visible');
+});
+
+function closeSearch() {
+  searchResults.classList.remove('visible');
+  searchOverlay.classList.remove('visible');
+  searchInput.value = '';
+  document.querySelector('.sidebar').classList.remove('open');
+}
+
+searchOverlay.addEventListener('click', closeSearch);
+
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    searchInput.focus();
+  }
+  if (e.key === 'Escape') closeSearch();
+});
+
+// Active sidebar link via IntersectionObserver
+const navLinks = document.querySelectorAll('.sidebar a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector('.sidebar a[href="#' + entry.target.id + '"]');
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-80px 0px -70% 0px', threshold: 0 });
+
+document.querySelectorAll('.section[id], .hero[id]').forEach(s => observer.observe(s));
+
+// Close mobile sidebar on nav click
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    document.querySelector('.sidebar').classList.remove('open');
+  });
+});
+</script>
+
+</body>
+</html>
